@@ -1,15 +1,13 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import CringeCard from '@/components/CringeCard';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, Filter, Trash2 } from 'lucide-react';
 
-// Mock data for vote page
 const mockVotingVideos = [
   {
     id: '1',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe1.mp4',
     creator: {
       username: 'cringelord420',
       avatar: 'https://images.unsplash.com/photo-1521119989659-a83eee488004',
@@ -23,7 +21,7 @@ const mockVotingVideos = [
   },
   {
     id: '2',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe2.mp4',
     creator: {
       username: 'awkwardandy',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
@@ -37,7 +35,7 @@ const mockVotingVideos = [
   },
   {
     id: '3',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe3.mp4',
     creator: {
       username: 'memequeen',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
@@ -51,7 +49,7 @@ const mockVotingVideos = [
   },
   {
     id: '4',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe4.mp4',
     creator: {
       username: 'memeking',
       avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36',
@@ -72,7 +70,6 @@ const Vote = () => {
   const [sortOption, setSortOption] = useState<SortOption>('newest');
   const [showFilters, setShowFilters] = useState(false);
   
-  // Simple sorting function
   const sortedVideos = [...videos].sort((a, b) => {
     switch (sortOption) {
       case 'trending':
@@ -85,7 +82,6 @@ const Vote = () => {
     }
   });
   
-  // Simulating filter functionality
   const handleReset = () => {
     setVideos(mockVotingVideos);
     setSortOption('newest');
@@ -189,7 +185,6 @@ const Vote = () => {
           </div>
         )}
         
-        {/* Token info box */}
         <div className="bg-gradient-to-r from-cringe-purple to-cringe-pink p-4 rounded-xl text-white mb-8 shadow-lg">
           <div className="flex items-center justify-between">
             <div>

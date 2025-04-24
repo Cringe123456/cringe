@@ -1,12 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import CringeCard from './CringeCard';
 
-// Mock data for initial feed content
 const mockVideos = [
   {
     id: '1',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe1.mp4',
     creator: {
       username: 'cringelord420',
       avatar: 'https://images.unsplash.com/photo-1521119989659-a83eee488004',
@@ -20,7 +18,7 @@ const mockVideos = [
   },
   {
     id: '2',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe2.mp4',
     creator: {
       username: 'awkwardandy',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
@@ -34,7 +32,7 @@ const mockVideos = [
   },
   {
     id: '3',
-    videoUrl: 'https://v16-webapp.tiktok.com/0b29c968837ec030754b294167a38870/656b425c/video/tos/useast2a/tos-useast2a-pve-0037-aiso/oUAm6PHAfDTze4QBPsmAeEAXghAsuXoJsHPIJK/',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe3.mp4',
     creator: {
       username: 'memequeen',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
@@ -52,15 +50,12 @@ const Feed: React.FC = () => {
   const [videos, setVideos] = useState(mockVideos);
   const [loading, setLoading] = useState(false);
   
-  // Simulated infinite scroll
   const loadMoreVideos = () => {
     setLoading(true);
     
-    // Simulate API fetch with timeout
     setTimeout(() => {
       const newVideos = [...videos];
       
-      // Clone and modify existing videos for demo purposes
       for (let i = 0; i < 3; i++) {
         const randomIndex = Math.floor(Math.random() * mockVideos.length);
         const clone = { ...mockVideos[randomIndex] };
@@ -76,7 +71,6 @@ const Feed: React.FC = () => {
     }, 1500);
   };
   
-  // Detect when user scrolls to bottom
   useEffect(() => {
     const handleScroll = () => {
       if (
