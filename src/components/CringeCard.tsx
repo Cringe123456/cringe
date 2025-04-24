@@ -1,8 +1,10 @@
-
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import CreatorInfo from './CreatorInfo';
 import VoteStakeButton from './VoteStakeButton';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import CommentPopup from './CommentPopup';
+import VoteModal from './VoteModal';
+import { Play, Pause, Volume2, VolumeX, MessageSquare } from 'lucide-react';
+import { Button } from './ui/button';
 
 interface CringeCardProps {
   id: string;
@@ -32,7 +34,10 @@ const CringeCard: React.FC<CringeCardProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [showComments, setShowComments] = useState(false);
+  const [showVoteModal, setShowVoteModal] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -45,26 +50,45 @@ const CringeCard: React.FC<CringeCardProps> = ({
     }
   };
 
-  const toggleMute = () => {
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
     }
   };
 
-  // This would ideally use IntersectionObserver in a real implementation
-  React.useEffect(() => {
-    if (inFeed) {
-      const timer = setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.play();
-          setIsPlaying(true);
-        }
-      }, 100);
-      
-      return () => clearTimeout(timer);
+  useEffect(() => {
+    if (videoRef.current) {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              videoRef.current?.play();
+              setIsPlaying(true);
+            } else {
+              videoRef.current?.pause();
+              setIsPlaying(false);
+            }
+          });
+        },
+        { threshold: 0.6 }
+      );
+
+      observerRef.current.observe(videoRef.current);
     }
-  }, [inFeed]);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const handleVoteSubmit = (amount: number) => {
+    console.log(`Voted ${amount} tokens on content ${id}`);
+    // Here you would typically make an API call to process the vote
+  };
 
   return (
     <div className={`cringe-card flex flex-col ${inFeed ? 'h-full w-full max-w-md mx-auto' : 'w-full'}`}>
@@ -83,7 +107,7 @@ const CringeCard: React.FC<CringeCardProps> = ({
         <div className="absolute inset-0 flex flex-col justify-between p-4">
           <div className="flex justify-between">
             <button 
-              onClick={(e) => { e.stopPropagation(); toggleMute(); }}
+              onClick={toggleMute}
               className="p-2 bg-black/40 backdrop-blur-sm rounded-full"
             >
               {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
@@ -102,16 +126,27 @@ const CringeCard: React.FC<CringeCardProps> = ({
             </div>
             
             <div className="flex flex-col items-center gap-4">
-              <VoteStakeButton 
-                contentId={id}
-                initialVotes={votes}
-                hasVoted={hasVoted}
-                hasStaked={hasStaked}
-                compact={true}
-              />
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="bg-black/40 backdrop-blur-sm text-white"
+                onClick={() => setShowComments(true)}
+              >
+                <MessageSquare size={20} />
+              </Button>
+
+              <div onClick={(e) => { e.stopPropagation(); setShowVoteModal(true); }}>
+                <VoteStakeButton 
+                  contentId={id}
+                  initialVotes={votes}
+                  hasVoted={hasVoted}
+                  hasStaked={hasStaked}
+                  compact={true}
+                />
+              </div>
               
               <button 
-                onClick={(e) => { e.stopPropagation(); togglePlay(); }}
+                onClick={togglePlay}
                 className="p-3 bg-cringe-pink rounded-full"
               >
                 {isPlaying ? <Pause size={22} fill="white" /> : <Play size={22} fill="white" />}
@@ -146,6 +181,17 @@ const CringeCard: React.FC<CringeCardProps> = ({
           />
         </div>
       )}
+      
+      <CommentPopup 
+        isOpen={showComments} 
+        onClose={() => setShowComments(false)} 
+      />
+
+      <VoteModal
+        isOpen={showVoteModal}
+        onClose={() => setShowVoteModal(false)}
+        onVote={handleVoteSubmit}
+      />
     </div>
   );
 };
