@@ -19,7 +19,7 @@ const mockContentLeaders = [
   },
   {
     id: '2',
-    title: 'POV: You're watching my SNOUT earnings go up 📈',
+    title: 'POV: You\'re watching my SNOUT earnings go up 📈',
     creator: {
       username: 'memequeen',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
