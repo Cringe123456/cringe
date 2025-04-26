@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CreatorInfo from './CreatorInfo';
 import { Button } from '@/components/ui/button';
@@ -75,9 +74,9 @@ const Leaderboard: React.FC = () => {
   
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h2 className="text-2xl font-bold text-cringe-purple">Leaderboard</h2>
-        <div className="flex">
+        <div className="flex flex-wrap gap-2">
           <Button 
             variant="ghost" 
             className={`flex items-center gap-2 ${activeTab === 'content' ? 'bg-cringe-purple/10 text-cringe-purple' : ''}`}
@@ -97,13 +96,12 @@ const Leaderboard: React.FC = () => {
         </div>
       </div>
       
-      {/* Live stats bar */}
-      <div className="flex items-center justify-between p-3 bg-cringe-purple/10 rounded-lg mb-6">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-cringe-purple/10 rounded-lg mb-6">
+        <div className="flex items-center gap-2 mb-2 sm:mb-0">
           <TrendingUp size={18} className="text-cringe-purple" />
           <span className="text-sm font-semibold">Live Stats</span>
         </div>
-        <div className="flex gap-4 text-sm">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
           <div>
             <span className="text-muted-foreground">Total Staked:</span>
             <span className="font-bold ml-1">143,250 SNOUT</span>
@@ -120,7 +118,7 @@ const Leaderboard: React.FC = () => {
           {mockContentLeaders.map((content, index) => (
             <div 
               key={content.id} 
-              className="flex items-center gap-4 p-4 cringe-card animate-fade-in"
+              className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 cringe-card animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className={`flex items-center justify-center w-10 h-10 rounded-full 
@@ -131,7 +129,7 @@ const Leaderboard: React.FC = () => {
               </div>
               
               <div className="flex-1">
-                <h3 className="font-semibold truncate max-w-[200px] sm:max-w-none">
+                <h3 className="font-semibold truncate max-w-full sm:max-w-[200px] mb-2 sm:mb-0">
                   {content.title}
                 </h3>
                 <CreatorInfo 
@@ -141,7 +139,7 @@ const Leaderboard: React.FC = () => {
                 />
               </div>
               
-              <div className="flex flex-col items-end">
+              <div className="flex flex-row sm:flex-col items-start sm:items-end gap-4 sm:gap-1">
                 <div className="font-bold text-cringe-purple">
                   {content.votes.toLocaleString()} votes
                 </div>
@@ -157,7 +155,7 @@ const Leaderboard: React.FC = () => {
           {mockCreatorLeaders.map((creator, index) => (
             <div 
               key={creator.username} 
-              className="flex items-center gap-4 p-4 cringe-card animate-fade-in"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 cringe-card animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className={`flex items-center justify-center w-10 h-10 rounded-full 
@@ -177,7 +175,7 @@ const Leaderboard: React.FC = () => {
                 />
               </div>
               
-              <div className="flex flex-col items-end">
+              <div className="flex flex-row sm:flex-col items-start sm:items-end gap-4 sm:gap-1 w-full sm:w-auto">
                 <div className="font-bold text-cringe-purple">
                   {creator.contentCount} videos
                 </div>

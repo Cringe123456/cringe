@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import CringeCard from './CringeCard';
 
@@ -88,12 +89,14 @@ const Feed: React.FC = () => {
   }, [videos, loading]);
 
   return (
-    <div className="feed-container">
-      {videos.map((video) => (
-        <div key={video.id} className="feed-item">
-          <CringeCard {...video} inFeed={true} />
-        </div>
-      ))}
+    <div className="container mx-auto px-4 pt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {videos.map((video) => (
+          <div key={video.id} className="feed-item min-h-[600px] w-full">
+            <CringeCard {...video} inFeed={true} />
+          </div>
+        ))}
+      </div>
       
       {loading && (
         <div className="w-full py-8 flex justify-center">
