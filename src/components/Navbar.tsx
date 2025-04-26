@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bell, Menu, User, Wallet, X } from 'lucide-react';
@@ -8,11 +7,12 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import ConnectWallet from './ConnectWallet';
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-background/80 backdrop-blur-lg border-b border-border flex items-center px-4">
-      <div className="container mx-auto flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md z-50">
+      <div className="container mx-auto flex justify-between items-center py-4 px-4">
         <Link to="/" className="flex items-center">
           <span className="font-black text-2xl bg-gradient-to-r from-cringe-purple to-cringe-pink bg-clip-text text-transparent">
             bigsnout
@@ -75,9 +75,7 @@ const Navbar = () => {
               <span>Dashboard</span>
             </Button>
           </Link>
-          <Button className="bg-gradient-to-r from-cringe-purple to-cringe-pink hover:opacity-90 transition-opacity">
-            Connect
-          </Button>
+          <ConnectWallet />
         </div>
       </div>
     </nav>
