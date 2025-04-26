@@ -96,7 +96,7 @@ const CringeCard: React.FC<CringeCardProps> = ({
         <video
           ref={videoRef}
           src={videoUrl}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover feed-video"
           loop
           playsInline
           muted={isMuted}

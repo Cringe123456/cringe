@@ -1,50 +1,49 @@
-
 import React, { useState, useEffect } from 'react';
 import CringeCard from './CringeCard';
 
 const mockVideos = [
   {
     id: '1',
-    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe1.mp4',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/dance_fail.mp4',
     creator: {
       username: 'cringelord420',
       avatar: 'https://images.unsplash.com/photo-1521119989659-a83eee488004',
       verified: true,
       tokensEarned: 4200,
     },
-    title: 'When the cringe hits just right 👌',
+    title: 'My dance moves are totally fire 🔥',
     votes: 1423,
     hasVoted: false,
     hasStaked: false,
   },
   {
     id: '2',
-    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe2.mp4',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/singing_fail.mp4',
     creator: {
       username: 'awkwardandy',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
       verified: false,
       tokensEarned: 1890,
     },
-    title: 'This is how I enter the club 😎',
+    title: 'Watch my amazing singing talent 🎤',
     votes: 987,
     hasVoted: true,
     hasStaked: true,
   },
   {
     id: '3',
-    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/cringe3.mp4',
+    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/prank_fail.mp4',
     creator: {
       username: 'memequeen',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
       verified: true,
       tokensEarned: 7642,
     },
-    title: "POV: You're watching my SNOUT earnings go up 📈",
+    title: "Epic prank gone wrong! 😱",
     votes: 3241,
     hasVoted: false,
     hasStaked: false,
-  },
+  }
 ];
 
 const Feed: React.FC = () => {
@@ -87,6 +86,35 @@ const Feed: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [videos, loading]);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.7,
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          video.play().catch(err => console.log("Autoplay prevented:", err));
+        } else {
+          video.pause();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+    
+    document.querySelectorAll('.feed-video').forEach(video => {
+      observer.observe(video);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [videos]);
 
   return (
     <div className="container mx-auto px-4 pt-4">
