@@ -215,7 +215,7 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
+              <div className="text-center py-10">
                 <Film size={48} className="mx-auto text-muted-foreground mb-4" />
                 <h3 className="font-bold text-xl mb-2">No videos yet</h3>
                 <p className="text-muted-foreground mb-4">
