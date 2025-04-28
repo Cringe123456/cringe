@@ -137,7 +137,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="flex justify-between items-center">
-                <div className="text-3xl font-bold">{mockAnalytics.availableToWithdraw} SNOUT</div>
+                <div className="text-2xl font-bold">{mockAnalytics.availableToWithdraw} SNOUT</div>
                 <Button 
                   variant="outline" 
                   size="sm"
