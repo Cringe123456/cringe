@@ -1,10 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import CringeCard from './CringeCard';
+import { toast } from "sonner";
 
 const mockVideos = [
   {
     id: '1',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-man-dancing-under-changing-lights-1240-large.mp4',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     creator: {
       username: 'cringelord420',
       avatar: 'https://images.unsplash.com/photo-1521119989659-a83eee488004',
@@ -18,7 +20,7 @@ const mockVideos = [
   },
   {
     id: '2',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-young-woman-showing-her-terrible-dancing-moves-40653-large.mp4',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     creator: {
       username: 'awkwardandy',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
@@ -32,7 +34,7 @@ const mockVideos = [
   },
   {
     id: '3',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-man-doing-tricks-with-a-basketball-outdoors-51003-large.mp4',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     creator: {
       username: 'memequeen',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
@@ -88,33 +90,12 @@ const Feed: React.FC = () => {
   }, [videos, loading]);
 
   useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.7,
-    };
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        const video = entry.target as HTMLVideoElement;
-        if (entry.isIntersecting) {
-          video.play().catch(err => console.log("Autoplay prevented:", err));
-        } else {
-          video.pause();
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, options);
-    
-    document.querySelectorAll('.feed-video').forEach(video => {
-      observer.observe(video);
+    // Show toast notification on component mount
+    toast.success("Videos will autoplay as you scroll", {
+      position: "top-center",
+      duration: 3000,
     });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [videos]);
+  }, []);
 
   return (
     <div className="container mx-auto px-4 pt-4">

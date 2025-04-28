@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import CreatorInfo from './CreatorInfo';
 import VoteStakeButton from './VoteStakeButton';
@@ -5,6 +6,7 @@ import CommentPopup from './CommentPopup';
 import VoteModal from './VoteModal';
 import { Play, Pause, Volume2, VolumeX, MessageSquare } from 'lucide-react';
 import { Button } from './ui/button';
+import { toast } from 'sonner';
 
 interface CringeCardProps {
   id: string;
@@ -36,17 +38,28 @@ const CringeCard: React.FC<CringeCardProps> = ({
   const [isMuted, setIsMuted] = useState(true);
   const [showComments, setShowComments] = useState(false);
   const [showVoteModal, setShowVoteModal] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
+        setIsPlaying(false);
       } else {
-        videoRef.current.play();
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+            })
+            .catch(error => {
+              console.error("Video play error:", error);
+              toast.error("Couldn't play video. Try clicking to play manually.");
+            });
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -59,31 +72,51 @@ const CringeCard: React.FC<CringeCardProps> = ({
   };
 
   useEffect(() => {
-    if (videoRef.current) {
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              videoRef.current?.play();
-              setIsPlaying(true);
-            } else {
-              videoRef.current?.pause();
-              setIsPlaying(false);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && videoRef.current && videoLoaded && !videoError) {
+            const playPromise = videoRef.current.play();
+            if (playPromise !== undefined) {
+              playPromise
+                .then(() => {
+                  setIsPlaying(true);
+                })
+                .catch(error => {
+                  console.error("Auto-play prevented:", error);
+                  // We don't show a toast here as it would be too noisy
+                });
             }
-          });
-        },
-        { threshold: 0.6 }
-      );
+          } else if (videoRef.current && isPlaying) {
+            videoRef.current.pause();
+            setIsPlaying(false);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
 
-      observerRef.current.observe(videoRef.current);
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
     }
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
       }
     };
-  }, []);
+  }, [videoLoaded, videoError]);
+
+  const handleVideoLoaded = () => {
+    setVideoLoaded(true);
+    setVideoError(false);
+  };
+
+  const handleVideoError = () => {
+    console.error(`Failed to load video: ${videoUrl}`);
+    setVideoError(true);
+    setVideoLoaded(false);
+  };
 
   const handleVoteSubmit = (amount: number) => {
     console.log(`Voted ${amount} tokens on content ${id}`);
@@ -101,7 +134,20 @@ const CringeCard: React.FC<CringeCardProps> = ({
           playsInline
           muted={isMuted}
           onClick={togglePlay}
+          onCanPlay={handleVideoLoaded}
+          onError={handleVideoError}
+          preload="auto"
         />
+        
+        {videoError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/70">
+            <p className="text-white text-center p-4">
+              Video couldn't be loaded
+              <br />
+              <span className="text-sm text-gray-400">Try refreshing the page</span>
+            </p>
+          </div>
+        )}
         
         {/* Overlay controls */}
         <div className="absolute inset-0 flex flex-col justify-between p-4">
@@ -130,7 +176,7 @@ const CringeCard: React.FC<CringeCardProps> = ({
                 variant="ghost" 
                 size="sm" 
                 className="bg-black/40 backdrop-blur-sm text-white"
-                onClick={() => setShowComments(true)}
+                onClick={(e) => { e.stopPropagation(); setShowComments(true); }}
               >
                 <MessageSquare size={20} />
               </Button>
