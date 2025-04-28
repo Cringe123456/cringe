@@ -4,7 +4,7 @@ import CringeCard from './CringeCard';
 const mockVideos = [
   {
     id: '1',
-    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/dance_fail.mp4',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-man-dancing-under-changing-lights-1240-large.mp4',
     creator: {
       username: 'cringelord420',
       avatar: 'https://images.unsplash.com/photo-1521119989659-a83eee488004',
@@ -18,28 +18,28 @@ const mockVideos = [
   },
   {
     id: '2',
-    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/singing_fail.mp4',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-young-woman-showing-her-terrible-dancing-moves-40653-large.mp4',
     creator: {
       username: 'awkwardandy',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
       verified: false,
       tokensEarned: 1890,
     },
-    title: 'Watch my amazing singing talent 🎤',
+    title: 'Watch my amazing moves 🕺',
     votes: 987,
     hasVoted: true,
     hasStaked: true,
   },
   {
     id: '3',
-    videoUrl: 'https://d3en4sxvqufuix.cloudfront.net/videos/prank_fail.mp4',
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-man-doing-tricks-with-a-basketball-outdoors-51003-large.mp4',
     creator: {
       username: 'memequeen',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
       verified: true,
       tokensEarned: 7642,
     },
-    title: "Epic prank gone wrong! 😱",
+    title: "Epic fail attempt! 😱",
     votes: 3241,
     hasVoted: false,
     hasStaked: false,
